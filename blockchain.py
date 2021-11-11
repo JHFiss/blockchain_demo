@@ -2,31 +2,51 @@ import string
 import hashlib
 from typing import TypeVar, Generic
 
-
-
 T = TypeVar('T')
 
+
 class Block(Generic[T]):
-    thisHash: string
-    prevHash: string
+    """
+    Implementation of a block for a blockchain that can contain arbitrary data
+    """
+    this_hash: string
+    prev_hash: string
     data: T
-    timestamp: int
+    time_stamp: int
     nonce = 0
 
-    def calcThisHash(self):
-        hashData = self.prevHash + str(self.data) + str(self.timestamp) + str(self.nonce)
-        return hashlib.sha3_256(hashData.encode('utf-8')).hexdigest()
+    def calc_this_hash(self):
+        """
+        Generates a hash for a block instance
+        """
+        hash_data = self.prev_hash + str(self.data) + str(self.time_stamp) + str(self.nonce)
+        return hashlib.sha3_256(hash_data.encode('utf-8')).hexdigest()
 
-    def __init__(self, prevHash: string, data: T, timestamp: int):
-        self.prevHash = prevHash
+    def mine_this_block(self):
+        """
+        Proof of work function for a block
+        Generates new hashes and increases nonce until the created hash contains the value defined in ``mine_cond``
+        """
+        mine_cond: string = '300597'
+        mine_hash: string = self.calc_this_hash()
+        while mine_cond not in mine_hash:
+            self.nonce += 1
+            mine_hash = self.calc_this_hash()
+            # Print the current value of nonce for debug and demonstration purposes
+            print(self.nonce)
+        return mine_hash
+
+    def __init__(self, prev_hash: string, data: T, timestamp: int):
+        self.prev_hash = prev_hash
         self.data = data
-        self.timestamp = timestamp
-        self.thisHash = self.calcThisHash()
+        self.time_stamp = timestamp
+        self.this_hash = self.calc_this_hash()
 
-        print(self.thisHash)
-        print(self.prevHash)
+        # print the values of a block after initialisation for debug and demonstration purposes
+        print(self.this_hash)
+        print(self.prev_hash)
         print(self.data)
-        print(self.timestamp)
+        print(self.time_stamp)
 
 
 
