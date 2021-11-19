@@ -50,15 +50,12 @@ class Block(Generic[T]):
         print(self.time_stamp)
 
     def __str__(self):
-        ret = ''
-        ret += '{\n'
-        ret += 'previous Hash: ' + self.prev_hash + '\n'
-        ret += 'Hash: ' + self.this_hash + '\n'
-        ret += 'Data: ' + str(self.data) + '\n'
-        ret += 'Nonce: ' + str(self.nonce) + '\n'
-        ret += 'Timestamp: ' + str(self.time_stamp) + '\n'
-        ret += '}'
-        return ret
+        return "{\n previous Hash: %s \n" \
+               "Hash: %s \n " \
+               "Data: %s \n " \
+               "Nonce: %s \n " \
+               "Timestamp: %s \n" \
+               "}" % (self.prev_hash, self.this_hash, self.data, self.nonce, self.time_stamp)
 
 
 
