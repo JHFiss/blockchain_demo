@@ -14,12 +14,13 @@ class Block(Generic[T]):
     data: T
     time_stamp: int
     nonce = 0
+    MINE_COND: string = '300597'
 
     def calc_hash(self):
         """
         Generates a hash for a block instance
         """
-        hash_data = self.prev_hash + str(self.data) + str(self.time_stamp) + str(self.nonce)
+        hash_data = self.prev_hash + str(self.data) + str(self.time_stamp) + str(self.nonce) + self.MINE_COND
         return hashlib.sha3_256(hash_data.encode('utf-8')).hexdigest()
 
     def mine_this_block(self):
@@ -27,9 +28,9 @@ class Block(Generic[T]):
         Proof of work function for a block
         Generates new hashes and increases nonce until the created hash contains the value defined in ``mine_cond``
         """
-        mine_cond: string = '300597'
+
         mine_hash: string = self.calc_hash()
-        while mine_cond not in mine_hash:
+        while self.MINE_COND not in mine_hash:
             self.nonce += 1
             mine_hash = self.calc_hash()
             # Print the current value of nonce for debug and demonstration purposes
@@ -50,12 +51,13 @@ class Block(Generic[T]):
         print(self.time_stamp)
 
     def __str__(self):
-        return "{\n previous Hash: %s \n" \
+        return "{\n previous Hash: %s \n " \
                "Hash: %s \n " \
                "Data: %s \n " \
                "Nonce: %s \n " \
-               "Timestamp: %s \n" \
-               "}" % (self.prev_hash, self.this_hash, self.data, self.nonce, self.time_stamp)
+               "Timestamp: %s \n " \
+               "Mine Cond: %s \n" \
+               "}" % (self.prev_hash, self.this_hash, self.data, self.nonce, self.time_stamp, self.MINE_COND)
 
 
 
