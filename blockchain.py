@@ -6,7 +6,7 @@ import block
 T = TypeVar('T')
 
 
-class Blockchain():
+class Blockchain:
     """
     simple Implementation of a blockchain
     """
@@ -37,6 +37,21 @@ class Blockchain():
                     print()
                     return False
         return True
+
+    def compare_to(self, other):
+        """
+        Compares the length of this Blockchain to the length of another
+        Blockchain
+        :param other: the Blockchain this Blockchain is Compared to
+        :return: True if this Blockchain is longer than the other, otherwise False
+        """
+        if not isinstance(other, Blockchain):
+            # don't attempt to compare against unrelated types
+            return NotImplemented
+
+        if len(self.chain) >= len(other.chain):
+            return True
+        return False
 
     def __init__(self, data: Generic[T]):
         self.chain = []
