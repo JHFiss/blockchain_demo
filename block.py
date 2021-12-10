@@ -34,7 +34,7 @@ class Block(Generic[T]):
             self.nonce += 1
             mine_hash = self.calc_hash()
             # Print the current value of nonce for debug and demonstration purposes
-            print(self.nonce)
+            # print(self.nonce)
         self.this_hash = mine_hash
         return mine_hash
 
