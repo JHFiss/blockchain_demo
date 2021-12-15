@@ -36,15 +36,14 @@ class ComputationNode(Node):
         if not self.my_blockchain.compare_to(bc):
             print('Updated Blockchain')
             self.my_blockchain = bc
-        print('Blockchain was not updated')
-        print(len(bc.chain))
-        print(len(self.my_blockchain.chain))
+        print('Node (' + str(self.id) + ') Blockchain was not updated')
 
     def __init__(self, host, port, data: Generic[T], id=None, callback=None, max_connections=0):
         super(ComputationNode, self).__init__(host, port, id, callback, max_connections)
         self.my_blockchain = blockchain.Blockchain(data)
         print("MyPeer2PeerNode: Started")
 
+    # Implement functions for p2p
     def outbound_node_connected(self, node):
         print("outbound_node_connected (" + self.id + "): " + node.id)
         self.nodes_outbound.append(node)
@@ -62,7 +61,8 @@ class ComputationNode(Node):
         self.nodes_outbound.remove(node)
 
     def node_message(self, node, data):
-        print("node_message (" + self.id + ") from " + node.id + ": " + str(data))
+        # parse the json object into a python object again
+        print("Node (" + self.id + ") received Blockchain from " + node.id)
         string_dat = str(data)
         string_dat = string_dat.replace("\'", "\"")
         obj = jsonpickle.decode(string_dat)
