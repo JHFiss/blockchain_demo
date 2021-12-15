@@ -1,5 +1,5 @@
+
 import time
-import asyncio
 from typing import TypeVar, Generic
 
 import block
@@ -13,13 +13,13 @@ class Blockchain:
     """
     chain: [block]
 
-    async def add_data(self, data: Generic[T]):
+    def add_data(self, data: Generic[T]):
         prev_hash = self.chain[len(self.chain) - 1].this_hash
         bl = block.Block(prev_hash, data, time.time())
         bl.mine_this_block()
         self.chain.append(bl)
 
-    async def validate_blockchain(self):
+    def validate_blockchain(self):
         """
         Validates the blockchain
         """
@@ -35,11 +35,10 @@ class Blockchain:
             # for all blocks except the genesis block, check if the previous hash is correct
             if i > 0:
                 if self.chain[i-1].this_hash not in self.chain[i].prev_hash:
-                    print()
                     return False
         return True
 
-    async def compare_to(self, other):
+    def compare_to(self, other):
         """
         Compares the length of this Blockchain to the length of another
         Blockchain
@@ -49,7 +48,6 @@ class Blockchain:
         if not isinstance(other, Blockchain):
             # don't attempt to compare against unrelated types
             return NotImplemented
-
         if len(self.chain) >= len(other.chain):
             return True
         return False
